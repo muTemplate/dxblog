@@ -3,11 +3,11 @@ namespace app\admin\controller;
 
 use app\admin\common\Base;
 
-class Index extends Base
+class SetUp extends Base
 {
     public function index()
     {
          
-        return  $this->fetch();
+        return  $this->fetch('system');
     } 
 }

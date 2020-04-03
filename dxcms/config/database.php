@@ -15,11 +15,11 @@ return [
     // 服务器地址
     'hostname'        => '127.0.0.1',
     // 数据库名
-    'database'        => '',
+    'database'        => 'dxtp',
     // 用户名
-    'username'        => 'root',
+    'username'        => 'dxtp',
     // 密码
-    'password'        => '',
+    'password'        => 'dxtp00',
     // 端口
     'hostport'        => '',
     // 连接dsn
