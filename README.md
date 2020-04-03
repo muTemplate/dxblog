@@ -1,2 +1,2 @@
-# dxblog
-这里是一个ThinkPHP5.0的博客开发文件
+#### dxblog
+就是存储我学习ThinkPHP 的项目
