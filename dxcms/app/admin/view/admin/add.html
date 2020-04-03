@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>添加管理员 - Window - 后台模板 </title>
+
+		{{include file="common/_style" /}}
+	</head>
+	<body>
+		<div class="container-fluid dx-main">
+
+			<form action="" method="post" class="col-md-3 layui-form" style="height: auto;padding:20px 15px;">
+				<div class="form-group">
+					<label for="account">登录账号</label>
+					<input type="text" class="form-control" name="account" value="" id="account" autocomplete="off">
+				</div>
+
+				<div class="form-group">
+					<label for="password">登录密码</label>
+					<input type="password" class="form-control" name="password" value="" id="password" autocomplete="off">
+				</div>
+
+				<div class="form-group">
+					<label for="name">管理员别名</label>
+					<input type="text" class="form-control" name="name" value="" id="name" autocomplete="off">
+				</div>
+
+
+				<div class="form-group">
+					<label for="face">管理员头像</label>
+					<input id="file-0b" class="file" type="file">
+				</div>
+
+
+				<div class="form-group">
+					<label for="name">是否禁用</label>
+					<div>
+						<input type="radio" name="status" value="1" title="启用" checked>
+						<input type="radio" name="status" value="0" title="禁用">
+					</div>
+				</div>
+
+				<button type="submit" class="btn btn-primary dx-btn-submit"> 提交 </button>
+			</form>
+
+		</div>
+
+	</body>
+	<script type="text/javascript">
+		$("#file-3").fileinput({
+			showUpload: false,
+			showCaption: false,
+			browseClass: "btn btn-primary btn-lg",
+			fileType: "any",
+			previewFileIcon: "<i class='glyphicon glyphicon-king'></i>"
+		});
+	</script>
+</html>
