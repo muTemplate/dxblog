@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:71:"D:\mumu\WWW\windowCms\public/../dxcms/app/admin\view\set_up\system.html";i:1585897843;s:61:"D:\mumu\WWW\windowCms\dxcms\app\admin\view\common\_style.html";i:1585897035;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:71:"D:\mumu\WWW\windowCms\public/../dxcms/app/admin\view\set_up\system.html";i:1585898652;s:61:"D:\mumu\WWW\windowCms\dxcms\app\admin\view\common\_style.html";i:1585897035;}*/ ?>
 <!DOCTYPE html>
 <html lang="zh">
 	<head>
@@ -28,7 +28,7 @@
 						<li role="presentation"><a href="#pay" aria-controls="pay" role="tab" data-toggle="tab">支付</a></li>
 						<li role="presentation"><a href="#tel" aria-controls="tel" role="tab" data-toggle="tab">联系</a></li>
 						<li role="presentation" class="dx-add-btn">
-							<a href="#tel" onclick="dx_openWindowParent('<i style=\'margin-right:6px;\' class=\'glyphicon glyphicon-plus\'></i> Add-添加','add_system.html')">添加</a>
+							<a href="#tel" onclick="dx_openWindowParent('<i style=\'margin-right:6px;\' class=\'glyphicon glyphicon-plus\'></i> Add-添加','<?php echo url('setUp/add'); ?>')">添加</a>
 						</li>
 					</ul>
 					<!-- title end -->
