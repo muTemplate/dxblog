@@ -3,21 +3,22 @@
 namespace app\admin\controller;
 
 use app\admin\common\Base;
-use app\admin\model\Systems;
 use think\Request;
 
-class SetUp extends Base
+class Systems extends Base
 {
 
     /**
      * 系统设置首页
      * 渲染页面
      **/
-
-
     public function index()
     {
+        $system = \app\admin\model\Systems::all()->toArray();
 
+       $this->assign([
+           'list'   =>  $system,
+       ]);
         return $this->fetch('system');
     }
 
@@ -39,7 +40,7 @@ class SetUp extends Base
      **/
     public function save(Request $req)
     {
-        $moder = new Systems();
+
         /**
          * - 判断数据是否POST方式 -
          * 不是返回错误提示
@@ -51,6 +52,7 @@ class SetUp extends Base
                 'name' => trim($data['name']),
                 'value' => trim($data['value']),
                 'input_type' => (int)trim($data['input_type']),
+                'pid'   =>  (int)trim($data['pid']),
             ];
 
             $validate = validate('systems');
@@ -59,7 +61,7 @@ class SetUp extends Base
                 $this->error($validate->getError());
             } else {
 
-                if ($moder->save($data)) {
+                if (\app\admin\model\Systems::create($setup)) {
                     $this->success('执行操作成功');
                 } else {
 
@@ -71,8 +73,31 @@ class SetUp extends Base
             $this->error('异常操作');
         }
 
+    }
+
+    /**
+    * 更新设置
+    **/
+    public function update(){
+        if(   $this->request->isPost() ){
+            $data = $this->request->param();
+
+            foreach ($data as $k => $v){
+
+               \app\admin\model\Systems::update(['value'=>$v],['name'=>$k]);
+            }
+
+             $this->success('执行操作成功','systems/index');
+        }
+
 
     }
+
+    //
+   public function __construct(Request $request = null)
+   {
+       parent::__construct($request);
+   }
 
 
 }

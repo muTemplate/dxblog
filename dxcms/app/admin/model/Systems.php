@@ -4,7 +4,16 @@
 namespace app\admin\model;
 
 
-class Systems
+use think\Model;
+
+class Systems extends Model
 {
+
+
+    protected $resultSetType = 'collection';
+    protected $autoWriteTimestamp = false;
+
+
+
 
 }

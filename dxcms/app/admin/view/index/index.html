@@ -11,47 +11,47 @@
 	</head>
 	<body class="dx-body">
 		<div class="dx-memu">
-			<div class="dx-memu-item" onclick="dx_openWindow('<i style=\'margin-right:6px;\' class=\'glyphicon glyphicon-th-large\'></i> SetUp-系统设置','{{:url(\'setUp/index\')}}')">
+			<div class="dx-memu-item" onclick="dx_openWindow('<i style=\'margin-right:6px;\' class=\'glyphicon glyphicon-th-large\'></i> System-系统设置','{{:url(\'systems/index\')}}')">
 				<img src="__ADMIN_TEMPLATE_PATH__/icon/imageres_109.ico">
 				<h3>系统设置</h3>
 			</div>
 
-			<div class="dx-memu-item">
+			<div class="dx-memu-item" onclick="dx_openWindow('<i style=\'margin-right:6px;\' class=\'glyphicon glyphicon-file\'></i> List-文档管理','{{:url(\'article/index\')}}')">
 				<img src="__ADMIN_TEMPLATE_PATH__/icon/imageres_6400.ico">
 				<h3>通讯录</h3>
 			</div>
 
-			<div class="dx-memu-item" onclick="dx_openWindow('<i style=\'margin-right:6px;\' class=\'glyphicon glyphicon-user\'></i> List-管理员','admin.html')">
+			<div class="dx-memu-item" onclick="dx_openWindow('<i style=\'margin-right:6px;\' class=\'glyphicon glyphicon-user\'></i> List-管理员','{{:url(\'admin/index\')}}')">
 				<img src="__ADMIN_TEMPLATE_PATH__/icon/imageres_79.ico">
 				<h3>管理员</h3>
 			</div>
 
-			<div class="dx-memu-item" onclick="dx_openWindow('<i style=\'margin-right:6px;\' class=\'glyphicon glyphicon-folder-open\'></i> List-栏目管理','category.html')">
+			<div class="dx-memu-item" onclick="dx_openWindow('<i style=\'margin-right:6px;\' class=\'glyphicon glyphicon-folder-open\'></i> List-栏目管理','{{:url(\'category/index\')}}')">
 				<img src="__ADMIN_TEMPLATE_PATH__/icon/imageres_8.ico">
 				<h3>栏目管理</h3>
 			</div>
 
-			<div class="dx-memu-item" onclick="dx_openWindow('<i style=\'margin-right:6px;\' class=\'glyphicon glyphicon-sunglasses\'></i> List-会员管理','member.html')">
+			<div class="dx-memu-item" onclick="dx_openWindow('<i style=\'margin-right:6px;\' class=\'glyphicon glyphicon-sunglasses\'></i> List-会员管理','{{:url(\'member/index\')}}')">
 				<img src="__ADMIN_TEMPLATE_PATH__/icon/imageres_181.ico">
 				<h3>会员管理</h3>
 			</div>
 
-			<div class="dx-memu-item" onclick="dx_openWindow('<i style=\'margin-right:6px;\' class=\'glyphicon glyphicon-picture\'></i> List-图片管理','image.html')">
+			<div class="dx-memu-item" onclick="dx_openWindow('<i style=\'margin-right:6px;\' class=\'glyphicon glyphicon-picture\'></i> List-图片管理','{{:url(\'admin/index\')}}')">
 				<img src="__ADMIN_TEMPLATE_PATH__/icon/imageres_113.ico">
 				<h3>图片管理</h3>
 			</div>
 
-			<div class="dx-memu-item" onclick="dx_openWindow('<i style=\'margin-right:6px;\' class=\'glyphicon glyphicon-file\'></i> List-文档管理','article.html')">
+			<div class="dx-memu-item" onclick="dx_openWindow('<i style=\'margin-right:6px;\' class=\'glyphicon glyphicon-file\'></i> List-文档管理','{{:url(\'article/index\')}}')">
 				<img src="__ADMIN_TEMPLATE_PATH__/icon/imageres_112.ico">
 				<h3>文档管理</h3>
 			</div>
 
-			<div class="dx-memu-item">
+			<div class="dx-memu-item" onclick="dx_openWindow('<i style=\'margin-right:6px;\' class=\'glyphicon glyphicon-file\'></i> List-文档管理','{{:url(\'article/index\')}}')">
 				<img src="__ADMIN_TEMPLATE_PATH__/icon/imageres_1022.ico">
 				<h3>系统日志</h3>
 			</div>
 
-			<div class="dx-memu-item">
+			<div class="dx-memu-item" onclick="dx_openWindow('<i style=\'margin-right:6px;\' class=\'glyphicon glyphicon-file\'></i> List-文档管理','{{:url(\'article/index\')}}')">
 				<img src="__ADMIN_TEMPLATE_PATH__/icon/imageres_55.ico">
 				<h3>回收站</h3>
 			</div>
@@ -67,21 +67,6 @@
 		</div>
 	</body>
 
-	<script type="text/javascript">
-		layui.use('form',function(){
-			layer.open({
-			  type: 2,
-			  title: false,
-			  closeBtn: true, //不显示关闭按钮
-			  shade: [0],
-			  area: ['340px', '215px'],
-			  offset: 'b', //右下角弹出
-			  time: 0, //2秒后自动关闭
-			  anim: 2,
-			  content: ['add.html', 'no'], //iframe的url，no代表不显示滚动条
-			});
-			})
-		
-	</script>
+
 
 </html>

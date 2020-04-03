@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:68:"D:\mumu\WWW\windowCms\public/../dxcms/app/admin\view\admin\edit.html";i:1585926402;s:61:"D:\mumu\WWW\windowCms\dxcms\app\admin\view\common\_style.html";i:1585897035;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:68:"D:\mumu\WWW\windowCms\public/../dxcms/app/admin\view\admin\edit.html";i:1585928470;s:61:"D:\mumu\WWW\windowCms\dxcms\app\admin\view\common\_style.html";i:1585897035;}*/ ?>
 <!DOCTYPE html>
 <html lang="zh">
 	<head>
@@ -41,7 +41,7 @@
 
 			#del{
 				float: right;
-				display: block;
+				display: none;
 			}
 		</style>
 
@@ -49,7 +49,7 @@
 	<body>
 		<div class="container-fluid dx-main">
 
-			<form action="<?php echo url('admin/update'); ?>" method="post" class="col-md-3 layui-form" style="height: auto;padding:20px 15px;">
+			<form action="<?php echo url('admin/update'); ?>" method="post" class="col-md-3 layui-form" style="height: auto;padding:10px 15px;">
 				<div class="form-group">
 					<label for="account">登录账号</label>
 					<input type="hidden" name="id" value="<?php echo $admin['id']; ?>">
@@ -68,12 +68,15 @@
 
 				<div class="form-group">
 					<label for="face" style="width: 100%;">
-						管理员头像 <span class="layui-btn layui-btn-xs layui-btn-danger" id="del">删除</span>
+						管理员头像
+
+
 					</label>
 					<div class="layui-upload" id="upload">
 						<i class="glyphicon glyphicon-picture"></i>
 						<img  id="demo1" src="<?php echo $admin['face']; ?>" alt="">
 					</div>
+					<input class="form-control" type="hidden" name="odface" value="<?php echo $admin['face']; ?>" id="odface">
 					<input class="form-control" type="hidden" name="face" value="<?php echo $admin['face']; ?>" id="face">
 					<span style="font-size: 12px;color: #8D8D8D;">
 						图片尺寸400*400
@@ -144,11 +147,12 @@
 					if (data.code === 0) {
 						layer.msg(data.msg, {anim: 3})
 					} else {
-						layer.alert(data.msg, {icon: 6, anim: 4}, function () {
-							$('#demo1').attr('src','').hide();
-							$('#upload .glyphicon').show();
-							$('#del').hide();
-						})
+
+						$('#demo1').attr('src','').hide();
+						$('#upload .glyphicon').show();
+						$('#del').hide();
+						$('#face').val('');
+
 					}
 				}
 			});

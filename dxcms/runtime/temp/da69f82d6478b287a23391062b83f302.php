@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:69:"D:\mumu\WWW\windowCms\public/../dxcms/app/admin\view\admin\admin.html";i:1585925053;s:61:"D:\mumu\WWW\windowCms\dxcms\app\admin\view\common\_style.html";i:1585897035;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:69:"D:\mumu\WWW\windowCms\public/../dxcms/app/admin\view\admin\admin.html";i:1585931307;s:61:"D:\mumu\WWW\windowCms\dxcms\app\admin\view\common\_style.html";i:1585897035;}*/ ?>
 <!DOCTYPE html>
 <html lang="zh">
 <head>
@@ -54,10 +54,16 @@
                 <td> <?php echo $item['create_time']; ?></td>
                 <td>  <?php echo $item['login_time']; ?> </td>
                 <td>
-								<span class="btn btn-default no status" data-name="status" data-id="1" data-val="1">
-									<i class="glyphicon glyphicon-remove"></i> 禁用
+                    <?php if($item['status'] == 1): ?>
+                        <span class="btn btn-default no status" data-name="status" data-id="<?php echo $item['id']; ?>" data-val="<?php echo $item['status']; ?>">
+                            <i class="glyphicon glyphicon-remove"></i> 禁用
+                        </span>
+                    <?php else: ?>
+                    <span class="btn btn-success status" data-name="status" data-id="<?php echo $item['id']; ?>" data-val="<?php echo $item['status']; ?>">
+									<i class="glyphicon glyphicon-ok"></i> 启用
 								</span>
 
+                    <?php endif; ?>
                 </td>
                 <td>
                     <div class="btn-group">
@@ -65,7 +71,7 @@
                            onclick="dx_openWindowParent('<i style=\'margin-right:6px;\' class=\'glyphicon glyphicon-edit\'></i> Edit-编辑','<?php echo url('admin/edit'); ?>?id=<?php echo $item['id']; ?>')">
                             <i class="glyphicon glyphicon-edit"></i> 编辑
                         </a>
-                        <a href="javascript:;" class="btn btn-warning">
+                        <a href="javascript:;" class="btn btn-warning" onclick="del(this,'<?php echo $item['id']; ?>')">
                             <i class="glyphicon glyphicon-trash"></i> 删除
                         </a>
                     </div>
@@ -87,9 +93,11 @@
         var val = $(this).attr('data-val');
         var action;
         if (val > 0) {
+            var status = 0;
             action = "禁用";
 
         } else {
+            var status = 1;
             action = "启用";
         }
 
@@ -100,12 +108,52 @@
             $(this).attr('class', 'btn btn-default no status').attr('data-val', '1').html('<i class="glyphicon glyphicon-remove"></i> 禁用');
         }
 
-        layer.msg('执行' + action + '操作' + '<br />' + '字段值:' + name + '<br />' + '管理员:' + id + '<br />' + '状态码:' + val, {
-            anim: 1,
-            time: 3000,
-            offset: 'b'
+        $.ajax({
+            type: "post",
+            url: "<?php echo url('admin/update'); ?>",
+            async: true,
+            data: {id:id,status:status},
+            dataType: 'json',
+            success: function (data) {
+                if (data.code === 0) {
+                    layer.msg(data.msg, {icon: 7, anim: 4})
+                } else {
+                    layer.alert(data.msg,{icon:1,anim:1},function () {
+                        layer.closeAll();
+                        window.location.reload();
+                    })
+                }
+            }
         });
+        return false;
+
+
     })
+
+//    删除
+    function del(obj,id) {
+        layer.confirm('真的删除行么', function (e) {
+            $.ajax({
+                type: "get",
+                url: "<?php echo url('admin/del'); ?>",
+                async: true,
+                data: {id: id},
+                dataType: 'json',
+                success: function (data) {
+                    if (data.code === 0) {
+                        layer.msg(data.msg, {icon: 7, anim: 4})
+                    } else {
+                       layer.alert(data.msg,{icon:1,anim:1},function () {
+                           layer.closeAll();
+                           $(obj).parents("tr").remove();
+                       })
+                    }
+                }
+            });
+            return false;
+        });
+    }
+
 </script>
 
 

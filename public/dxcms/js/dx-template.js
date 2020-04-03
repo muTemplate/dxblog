@@ -74,10 +74,10 @@ function dx_openWindow(title, url, w, h) {
 	
 	if(window_width > 767){
 		if (w == null || w == '') {
-			w = ($(window).width() * .8);
+			w = ($(window).width() * .85);
 		};
 		if (h == null || h == '') {
-			h = ($(window).height()) * .8;
+			h = ($(window).height()) * .85;
 		};
 	}else{
 		if (w == null || w == '') {
@@ -112,10 +112,10 @@ function dx_openWindowParent(title, url, w, h) {
 		url = "404.html";
 	};
 	if (w == null || w == '') {
-		w = ($(window).width() * 0.9);
+		w = ($(window).width() * 1);
 	};
 	if (h == null || h == '') {
-		h = ($(window).height() * 0.9);
+		h = ($(window).height() * 1);
 	};
 	parent.layer.open({
 		type: 2,

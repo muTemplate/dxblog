@@ -11,7 +11,7 @@
 
 // 应用公共文件
 
-function Message($code=200,$msg="信息提示",$data){
+function Message($code=200,$msg="信息提示",$data=""){
 
     return json(['code'=>$code,'msg'=>$msg,'data'=>$data]);
 }

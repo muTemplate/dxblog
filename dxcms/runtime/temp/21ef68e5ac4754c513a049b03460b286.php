@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:67:"D:\mumu\WWW\windowCms\public/../dxcms/app/admin\view\admin\add.html";i:1585924848;s:61:"D:\mumu\WWW\windowCms\dxcms\app\admin\view\common\_style.html";i:1585897035;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:67:"D:\mumu\WWW\windowCms\public/../dxcms/app/admin\view\admin\add.html";i:1585928802;s:61:"D:\mumu\WWW\windowCms\dxcms\app\admin\view\common\_style.html";i:1585897035;}*/ ?>
 <!DOCTYPE html>
 <html lang="zh">
 	<head>
@@ -38,10 +38,7 @@
 				display: none;
 			}
 
-			#del{
-				float: right;
-				display: none;
-			}
+
 		</style>
 
 	</head>
@@ -67,7 +64,7 @@
 
 				<div class="form-group">
 					<label for="face" style="width: 100%;">
-						管理员头像 <span class="layui-btn layui-btn-xs layui-btn-danger" id="del">删除</span>
+						管理员头像
 					</label>
 					<div class="layui-upload" id="upload">
 						<i class="glyphicon glyphicon-picture"></i>

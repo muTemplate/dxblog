@@ -4,7 +4,7 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
-		<title>添加管理员 - Window - 后台模板 </title>
+		<title>编辑管理员 - Window - 后台模板 </title>
 
 		{{include file="common/_style" /}}
 
@@ -22,12 +22,13 @@
 				font-size: 80px;
 				color: #dddddd;
 				margin-top: 30px;
+				display: none;
 			}
 
 			#demo1{
 				width: 150px;
 				height: 150px;
-				display: none;
+				display: block;
 			}
 
 			#del{
@@ -40,10 +41,11 @@
 	<body>
 		<div class="container-fluid dx-main">
 
-			<form action="{{:url('admin/save')}}" method="post" class="col-md-3 layui-form" style="height: auto;padding:20px 15px;">
+			<form action="{{:url('admin/update')}}" method="post" class="col-md-3 layui-form" style="height: auto;padding:10px 15px;">
 				<div class="form-group">
 					<label for="account">登录账号</label>
-					<input type="text" class="form-control" name="account" value="" id="account" autocomplete="off">
+					<input type="hidden" name="id" value="{{$admin.id}}">
+					<input type="text" class="form-control" name="account" value="{{$admin.account}}" readonly id="account" autocomplete="off">
 				</div>
 
 				<div class="form-group">
@@ -53,19 +55,21 @@
 
 				<div class="form-group">
 					<label for="name">管理员别名</label>
-					<input type="text" class="form-control" name="name" value="" id="name" autocomplete="off">
+					<input type="text" class="form-control" name="name" value="{{$admin.name}}" id="name" autocomplete="off">
 				</div>
-
 
 				<div class="form-group">
 					<label for="face" style="width: 100%;">
-						管理员头像 <span class="layui-btn layui-btn-xs layui-btn-danger" id="del">删除</span>
+						管理员头像
+
+
 					</label>
 					<div class="layui-upload" id="upload">
 						<i class="glyphicon glyphicon-picture"></i>
-						<img  id="demo1" src="" alt="">
+						<img  id="demo1" src="{{$admin.face}}" alt="">
 					</div>
-					<input class="form-control" type="hidden" name="face" value="" id="face">
+					<input class="form-control" type="hidden" name="odface" value="{{$admin.face}}" id="odface">
+					<input class="form-control" type="hidden" name="face" value="{{$admin.face}}" id="face">
 					<span style="font-size: 12px;color: #8D8D8D;">
 						图片尺寸400*400
 					</span>
@@ -75,8 +79,13 @@
 				<div class="form-group">
 					<label for="name">是否禁用</label>
 					<div>
+						{{if condition="$admin.status eq 1"}}
 						<input type="radio" name="status" value="1" title="启用" checked>
 						<input type="radio" name="status" value="0" title="禁用">
+						{{else/}}
+						<input type="radio" name="status" value="1" title="启用">
+						<input type="radio" name="status" value="0" title="禁用" checked>
+						{{/if}}
 					</div>
 				</div>
 
@@ -113,9 +122,10 @@
 					}
 					//上传成功
 				}
-
 			});
 
 		});
+
+
 	</script>
 </html>

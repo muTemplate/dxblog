@@ -291,3 +291,8 @@ form label {
 	background: #DDDDDD;
 	color: #55aaff;
 }
+
+input,
+textarea{
+	border-radius: 0!important;
+}

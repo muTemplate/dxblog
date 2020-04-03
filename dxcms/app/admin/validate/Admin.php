@@ -4,20 +4,20 @@ namespace app\admin\validate;
 
 use think\Validate;
 
-class systems extends Validate{
+class Admin extends Validate{
 
     protected $rule = [
-        ['title' ,  'require|max:60|chsAlpha|unique:systems','设置说明不能为空|设置说明最多60字符|设置说明只能是汉字和字母|设置说明已经存在'],
-        ['name' ,  'require|max:60|alphaDash|unique:systems','设置参数不能为空|设置参数最多60字符|设置参数只能是字母和数字，下划线_|设置参数已经存在'],
-        ['value' , 'max:200','设置默认值最多200字符'],
-        ['input_type' ,  'in:1,2|number','设置类型参数错误|设置类型参数异常']
+        ['account' ,  'require|max:30|unique:admin','登录账号不能为空|登录账号最多30字符|登录账号已经存在'],
+        ['name' ,  'max:60','用户名称最多60字符'],
+        ['password' , 'require|alphaDash','密码不能为空|密码只能是字母和数字，下划线_及破折号-'],
+        ['status' ,  'in:0,1|number','是否禁用参数错误|是否禁用参数异常']
     ];
 
 
     protected  $scene =[
 
-        'add' => ['title','name','value','input_type'],
-        'edit' => ['title','name','value','input_type'],
+        'add' => ['account','name','password','status'],
+        'edit' => ['account','name','password'=>['alphaDash'],'status'],
 
     ];
 
