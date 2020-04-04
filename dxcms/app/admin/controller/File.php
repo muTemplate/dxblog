@@ -93,10 +93,18 @@ class File extends Base
          * */
         $file = request()->file('file');
         $fileArray = (array)$file;
+
+
         $imgInfo[] =  "";
         foreach ($fileArray as $key=>$val){
             $imgInfo[] = $val;
         }
+
+        if(file_exists($filePath.'/'.$imgInfo[7]['name'])){
+            return Message(0,'帮你把名称为'.$imgInfo[7]['name'].'的图片取出来了,如和上传图片不一至,请改名后重试 ','/'.$filePath.'/'.$imgInfo[7]['name']);
+        }
+
+//        halt( $filePath.'/'.$imgInfo[7]['name']);
 
         /**
          * 验证图片后缀是否符合
@@ -110,14 +118,16 @@ class File extends Base
          */
 
         if ($imgSize<$imgInfo[7]['size']){
-            return Message(0,'头像图片不能超过1M');
+            return Message(0,'图片不能超过3M');
         }
 
         /**
          *  通过验证 移动图片到指定文件夹，并返回存储地址
          *      $imagePath
          **/
-        $info = $file->rule('uniqid')->move($filePath);
+        $info = $file->rule('uniqid')->move($filePath,'');
+
+        //halt($info);
 
         if ($info){
 

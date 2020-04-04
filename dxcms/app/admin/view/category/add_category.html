@@ -25,6 +25,7 @@
 				margin-top: 5px;
 			}
 
+
 			#demo1{
 				width: 100%;
 				max-height: 150px;
@@ -36,7 +37,7 @@
 	</head>
 	<body>
 		<div class="container-fluid dx-main">
-			<form action="" method="post" class="layui-form">
+			<form action="{{:url('category/save')}}" method="post" class="layui-form">
 				<div class="dx-main-box">
 					<!-- title -->
 					<ul class="nav nav-tabs stystem-tabs" role="tablist">
@@ -67,7 +68,7 @@
 									<i class="glyphicon glyphicon-picture"></i>
 									<img  id="demo1" src="" alt="">
 								</div>
-								<input class="form-control" type="hidden" name="cover_img" value="" id="face">
+								<input class="form-control" type="text" readonly name="cover_img" value="" id="face">
 							</div>
 
 							<div class="form-group">
@@ -218,7 +219,9 @@
 				,done: function(res){
 					//如果上传失败
 					if(res.code === 0){
-						return layer.msg(res.msg);
+						$('#face').val(res.data);
+						layer.alert(res.msg);
+
 					}
 					else{
 						$('#face').val(res.data);

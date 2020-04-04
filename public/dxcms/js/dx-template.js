@@ -6,7 +6,7 @@ $(window).ready(function() {
 
 
 		$("tbody.category-table tr[pid!='0']").hide();
-		$('.icon').click(function() {
+		$('.icon-a').click(function() {
 			if ($(this).attr('data-open') == 'on') {
 				$(this).attr('class', 'glyphicon glyphicon-minus icon-a');
 				$(this).attr('data-open', 'off');
@@ -20,7 +20,7 @@ $(window).ready(function() {
 				cateId = $(this).parents('tr').attr('cid');
 				getCateId(cateId);
 				for (var i in cateIds) {
-					$("tbody.category-table tr[cid=" + cateIds[i] + "]").hide().find('.icon').attr('class',
+					$("tbody.category-table tr[cid=" + cateIds[i] + "]").hide().find('.icon-a').attr('class',
 							'glyphicon glyphicon-plus icon-a')
 						.attr('data-open', 'on');
 				}
@@ -30,8 +30,8 @@ $(window).ready(function() {
 
 		function getCateId(cateId) {
 
-			$("tbody.category-table tr[pid=" + cateId + "]").each(function(index, el) {
-				id = $(el).attr('cid');
+			$("tbody.category-table tr[pid=" + cateId + "]").each(function(index, e) {
+				id = $(e).attr('cid');
 				cateIds.push(id);
 				getCateId(id);
 			});
