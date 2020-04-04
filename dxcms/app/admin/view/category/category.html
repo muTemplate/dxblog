@@ -56,7 +56,12 @@
                     <span style="color: #1E9FFF;">
                         <?php echo str_repeat('————|',$item['level']*1); ?>
                     </span>
-                    <a href="#"> {{$item.title}} </a>
+
+                    <a href="javascript:;"
+                       onclick="dx_openWindowParent('<i class=\'glyphicon glyphicon-folder-open\'></i>  文档列表 — {{$item.title}}','{{:url(\'article/index\')}}?pid={{$item.id}}')">
+                        {{$item.title}}
+                    </a>
+
                 </td>
                 <td>
                     {{if condition="$item.cover_img neq null"}}

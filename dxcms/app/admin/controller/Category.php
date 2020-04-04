@@ -185,12 +185,17 @@ class Category extends Base
                     'id'    => $data['id'],
                     'isread'    =>  $data['isread'],
                 ];
+               if($data['isread']==1){
+                   $msg = "启用";
+               } else{
+                   $msg ="禁用";
+               }
 
                if( \app\admin\model\Category::update($cate)){
 
-                   return Message(1,'执行操作成功');
+                   return Message(1,'管理员已'.$msg);
                }else{
-                   return Message(0,'执行操作失败');
+                   return Message(0,'管理员已'.$msg);
                }
 
             }
@@ -228,6 +233,11 @@ class Category extends Base
 
     public function del($id)
     {
+
+//        判断有木有子栏目
+        if (db('category')->where('pid',$id)->find()){
+            return Message(0, '当前栏目下有子栏目,无法删除');
+        }
 
         $delCate = \app\admin\model\Category::get($id);
 

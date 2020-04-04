@@ -367,3 +367,70 @@ textarea {
     border-radius: 4px;
     z-index: 1!important;
 }
+
+.login-body{
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background: rgba(0,0,0,.5);
+    z-index: 9999;
+}
+
+.login-box{
+    width: 800px;
+    height: 100px;
+    position: absolute;
+    top:0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+.login-form{
+    width: 100%;
+    height: auto;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+.login-form .form-control{
+    transition: all .5s;
+    background: transparent;
+    border-color: rgba(255,255,255,.12);
+    color: #00FF00;
+}
+
+.login-form .form-control:focus{
+    border-color: #00FF00;
+}
+
+.login-form .btn-default {
+    color: #efefef;
+    background-color: transparent;
+    border-color: rgba(255,255,255,.12);
+}
+
+.login-form .btn-default:active,
+.login-form .btn-default:focus{
+    background: transparent;
+    border-color: #00FF00;
+    outline: transparent!important;
+}
+
+.code-img{
+    position: absolute;
+    width: 200px;
+    height: 60px;
+    top: -100%;
+    left: 0;
+    right: 0;
+    margin: auto;
+    background: darkgoldenrod;
+    z-index: 99999;
+    text-align: center;
+    line-height: 60px;
+    border-radius: 0 0 5px 5px;
+}
