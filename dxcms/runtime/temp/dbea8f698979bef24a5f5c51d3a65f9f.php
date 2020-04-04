@@ -1,3 +1,4 @@
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:78:"D:\mumu\WWW\windowCms\public/../dxcms/app/admin\view\article\edit_article.html";i:1586013785;s:61:"D:\mumu\WWW\windowCms\dxcms\app\admin\view\common\_style.html";i:1585897035;}*/ ?>
 <!DOCTYPE html>
 <html lang="zh">
 <head>
@@ -5,7 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>添加文档 - Window - 后台模板 </title>
-    {{include file="common/_style" /}}
+    <link rel="stylesheet" type="text/css" href="/dxcms/include/bootstrap/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="/dxcms/include/layui/css/layui.css" />
+<link rel="stylesheet" type="text/css" href="/dxcms/css/dx-template.css" />
+
+<script src="/dxcms/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+<script src="/dxcms/include/bootstrap/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/dxcms/include/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+<script src="/dxcms/js/dx-template.js" type="text/javascript" charset="utf-8"></script>
 
     <style type="text/css">
         #upload{
@@ -29,26 +37,26 @@
 </head>
 <body>
 <div class="container-fluid dx-main" style="height: auto;">
-    <form action="{{:url('article/save')}}" method="post" class="col-md-6 layui-form" style="height: auto;padding:20px 15px;">
+    <form action="<?php echo url('article/save'); ?>" method="post" class="col-md-6 layui-form" style="height: auto;padding:20px 15px;">
 
         <div class="form-group">
             <label for="account">文章标题</label>
-            <input type="text" class="form-control" name="title" value="{{$article.title}}" id="account" autocomplete="off">
-            <input type="hidden" name="id" value="{{$article.id}}">
+            <input type="text" class="form-control" name="title" value="<?php echo $article['title']; ?>" id="account" autocomplete="off">
+            <input type="hidden" name="id" value="<?php echo $article['id']; ?>">
         </div>
 
         <div class="form-group">
             <label for="account">文章属性*- <i style="font-size: 12px;color: #ff0000;">暂时支持单选</i> -*</label>
             <div style="padding-top: 5px;">
-                {{volist name="flag" id="f"}}
-                <input type="checkbox" name="flag" value="{{$f.fName}}" title="{{$f.fTitle}}" lay-skin="primary" {{if condition="$article.flag eq $f.fName"}} checked {{/if}} >
-                {{/volist}}
+                <?php if(is_array($flag) || $flag instanceof \think\Collection || $flag instanceof \think\Paginator): $i = 0; $__LIST__ = $flag;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$f): $mod = ($i % 2 );++$i;?>
+                <input type="checkbox" name="flag" value="<?php echo $f['fName']; ?>" title="<?php echo $f['fTitle']; ?>" lay-skin="primary" <?php if($article['flag'] == $f['fName']): ?> checked <?php endif; ?> >
+                <?php endforeach; endif; else: echo "" ;endif; ?>
             </div>
         </div>
 
         <div class="form-group">
             <label for="password">文章摘要</label>
-            <textarea class="form-control" name="info" id="password" autocomplete="off" rows="4">{{$article.info}}</textarea>
+            <textarea class="form-control" name="info" id="password" autocomplete="off" rows="4"><?php echo $article['info']; ?></textarea>
         </div>
 
         <div class="form-group">
@@ -58,23 +66,21 @@
                    <label for="source">所属栏目</label>
                    <select name="pid" class="form-control">
                        <option value=""></option>
-                       {{volist name="cate" id="item"}}
-                            {{if condition="$item.type eq 1"}}
-                                <option {{if condition="$article.pid eq $item.id"}} selected {{/if}}  value="{{$item.id}}"><?php echo str_repeat('————|',$item['level']*1); ?> {{$item.title}}</option>
-                            {{/if}}
-                       {{/volist}}
+                       <?php if(is_array($cate) || $cate instanceof \think\Collection || $cate instanceof \think\Paginator): $i = 0; $__LIST__ = $cate;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$item): $mod = ($i % 2 );++$i;if($item['type'] == 1): ?>
+                                <option <?php if($article['pid'] == $item['id']): ?> selected <?php endif; ?>  value="<?php echo $item['id']; ?>"><?php echo str_repeat('————|',$item['level']*1); ?> <?php echo $item['title']; ?></option>
+                            <?php endif; endforeach; endif; else: echo "" ;endif; ?>
 
                    </select>
                </div>
 
                <div style="margin-bottom: 15px;">
                    <label for="writer">文章作者</label>
-                   <input type="text" class="form-control" name="writer" value="{{$article.writer}}" id="writer" autocomplete="off">
+                   <input type="text" class="form-control" name="writer" value="<?php echo $article['writer']; ?>" id="writer" autocomplete="off">
                </div>
 
                <div style="margin-bottom: 15px;">
                    <label for="source">文章来源</label>
-                   <input type="text" class="form-control" name="source" value="{{$article.source}}" id="source" autocomplete="off">
+                   <input type="text" class="form-control" name="source" value="<?php echo $article['source']; ?>" id="source" autocomplete="off">
                </div>
            </div>
 
@@ -83,37 +89,37 @@
                     文章缩略图
                 </label>
                 <div class="layui-upload" id="upload">
-                    <img id="demo1" src="{{$article.thumbnail}}" alt="">
+                    <img id="demo1" src="<?php echo $article['thumbnail']; ?>" alt="">
                 </div>
-                <input class="form-control" type="text" name="thumbnail" readonly value="{{$article.thumbnail}}" id="face">
+                <input class="form-control" type="text" name="thumbnail" readonly value="<?php echo $article['thumbnail']; ?>" id="face">
             </div>
         </div>
 
 
         <div class="form-group" style="height: 530px;clear: both;">
             <label for="captcha_font">文章内容</label>
-            <textarea name="body" class="form-control" id="content">{{$content.body}}</textarea>
+            <textarea name="body" class="form-control" id="content"><?php echo $content['body']; ?></textarea>
         </div>
 
         <div class="form-group" style="height: 60px;">
             <div class="col-md-4" style="padding:  0;padding-right: 10px;">
                 <label>隐藏文章</label>
                 <div>
-                    <input type="radio" name="isread" value="1" title="显示" {{if condition="$article.isread eq 1"}} checked {{/if}} >
-                    <input type="radio" name="isread" value="0" title="隐藏"  {{if condition="$article.isread eq 0"}} checked {{/if}} >
+                    <input type="radio" name="isread" value="1" title="显示" <?php if($article['isread'] == 1): ?> checked <?php endif; ?> >
+                    <input type="radio" name="isread" value="0" title="隐藏"  <?php if($article['isread'] == 0): ?> checked <?php endif; ?> >
                 </div>
             </div>
             <div class="col-md-4" style="padding:  0;padding-left: 10px;">
                 <label>开启评论</label>
                 <div>
-                    <input type="radio" name="comment" value="1" title="开启"  {{if condition="$article.comment eq 1"}} checked {{/if}}>
-                    <input type="radio" name="comment" value="0" title="关闭"  {{if condition="$article.comment eq 0"}} checked {{/if}}>
+                    <input type="radio" name="comment" value="1" title="开启"  <?php if($article['comment'] == 1): ?> checked <?php endif; ?>>
+                    <input type="radio" name="comment" value="0" title="关闭"  <?php if($article['comment'] == 0): ?> checked <?php endif; ?>>
                 </div>
             </div>
             <div class="col-md-4" style="padding:  0;padding-left: 10px;">
                 <label>发布时间</label>
                 <div>
-                    <input type="text" class="form-control" name="create_time" value="{{$article.create_time}}" id="addTime" >
+                    <input type="text" class="form-control" name="create_time" value="<?php echo $article['create_time']; ?>" id="addTime" >
                 </div>
             </div>
         </div>
@@ -125,8 +131,8 @@
     </form>
 </div>
 </body>
-<script src="__ADMIN_TEMPLATE_PATH__/include/umeditor/ueditor.config.js" type="text/javascript" charset="utf-8"></script>
-<script src="__ADMIN_TEMPLATE_PATH__/include/umeditor/ueditor.all.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/dxcms/include/umeditor/ueditor.config.js" type="text/javascript" charset="utf-8"></script>
+<script src="/dxcms/include/umeditor/ueditor.all.min.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
     var ue = UE.getEditor('content', {
         //取消内容框自动增长，改成滚动条
@@ -220,7 +226,7 @@
         //普通图片上传
         var uploadInst = upload.render({
             elem: '#upload'
-            ,url: "{{:url('file/image')}}" //改成您自己的上传接口
+            ,url: "<?php echo url('file/image'); ?>" //改成您自己的上传接口
             ,before: function(obj){
                 //预读本地文件示例，不支持ie8
                 obj.preview(function(index, file, result){

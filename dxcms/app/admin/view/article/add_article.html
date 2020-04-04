@@ -10,17 +10,22 @@
     <style type="text/css">
         #upload{
             width: 100%;
-            height: 185px;
+            height: 150px;
             padding: 0;
             border: 1px solid #d0e9c6;
             text-align: center;
             cursor: pointer;
         }
 
-        #demo1{
-            width: 150px;
-            height: 150px
+        #face {
+            width: 100%;
         }
+
+        #demo1{
+            width: 100%;
+            margin: 0 auto;
+        }
+
 
     </style>
 </head>
@@ -81,7 +86,7 @@
                 <div class="layui-upload" id="upload">
                     <img id="demo1" src="" alt="">
                 </div>
-                <input class="form-control" type="hidden" name="thumbnail" value="" id="face">
+                <input class="form-control" type="text" name="thumbnail" readonly value="" id="face">
             </div>
         </div>
 
@@ -229,7 +234,6 @@
                 if(res.code === 0){
                     $('#face').val(res.data);
                     layer.alert(res.msg);
-
                 }
                 else{
                     $('#face').val(res.data);

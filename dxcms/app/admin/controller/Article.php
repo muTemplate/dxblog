@@ -10,16 +10,32 @@ use think\Request;
 
 class Article extends Base
 {
-    public function index(){
+    public function index($pid=""){
 
         $model = new \app\admin\model\Article();
+        $category = \app\admin\model\Category::all()->toArray();
 
-        $list = $model->paginate(7);
+        if ($pid>0){
+            $oid = \app\admin\model\Category::get($pid);
+        }else{
+            $oid = 0;
+        }
+
+
+        if ($pid !="" && isset($pid)){
+            $list = $model->where('pid',$pid)->paginate(7);
+
+        }else{
+            $list = $model->paginate(7);
+        }
+
+
         $page = $list->render();
-
         $this->assign([
             'list'  =>  $list,
+            'cate'  =>  $category,
             'page'  => $page,
+            'oid'   => $oid['pid']
         ]);
         return $this->fetch('article');
     }

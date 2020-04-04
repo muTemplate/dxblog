@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:73:"D:\mumu\WWW\windowCms\public/../dxcms/app/admin\view\article\article.html";i:1585991996;s:61:"D:\mumu\WWW\windowCms\dxcms\app\admin\view\common\_style.html";i:1585897035;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:73:"D:\mumu\WWW\windowCms\public/../dxcms/app/admin\view\article\article.html";i:1586013471;s:61:"D:\mumu\WWW\windowCms\dxcms\app\admin\view\common\_style.html";i:1585897035;}*/ ?>
 <!DOCTYPE html>
 <html lang="zh">
 	<head>
@@ -23,6 +23,10 @@
 					添加
 				</a>
 				<a href="javascript:;" onclick="window.location.reload()" class="btn btn-info"><i class="glyphicon glyphicon-refresh"></i>刷新</a>
+				<?php if($oid > 0): ?>
+					<a href="javascript:;" onclick="javascript:history.back(-1);" class="btn btn-warning"><i class="glyphicon glyphicon-share-alt"></i>返回上级</a>
+				<?php endif; ?>
+
 			</div>
 			<div class="table-responsive">
 				<table class="table table-hover">
@@ -34,118 +38,130 @@
 							<th style="width: 150px;">栏目</th>
 							<th style="width: 150px;">发布人</th>
 							<th>添加时间</th>
-
 							<th>状态</th>
 							<th class="last-th">操作</th>
 						</tr>
 					</thead>
 					<tbody>
+					<?php if(is_array($list) || $list instanceof \think\Collection || $list instanceof \think\Paginator): $i = 0; $__LIST__ = $list;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$item): $mod = ($i % 2 );++$i;?>
 						<tr>
-							<td class="frist-th">1</td>
+							<td class="frist-th"><?php echo $item['id']; ?></td>
 							<td>
-								<img src="dx/img/12.jpg" class="table-img br0">
+								<?php if($item['thumbnail'] != null): ?>
+								<img src="<?php echo $item['thumbnail']; ?>" class="table-img br0">
+								<?php else: ?>
+								<img src="/dxcms/img/no_img.gif" alt="暂无图片" class="table-img br0">
+								<?php endif; ?>
 							</td>
 							<td style="min-width: 400px;">
-								<a href="#">T179次列车在湖南郴州脱线 未造成人员死亡</a>
+								<a href=""><?php echo $item['title']; ?></a>
 							</td>
 							<td>
-								<a href="#">国内</a>
+								<?php if(is_array($cate) || $cate instanceof \think\Collection || $cate instanceof \think\Paginator): $i = 0; $__LIST__ = $cate;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;if($item['pid'] == $vo['title']): ?>
+										<a href="<?php echo url('article/index',['pid'=>$vo['id']]); ?>"><?php echo $vo['title']; ?></a>
+									<?php endif; endforeach; endif; else: echo "" ;endif; ?>
 							</td>
-							<td>admin</td>
-							<td>2020-03-13</td>
+							<td><?php echo $item['admin']; ?></td>
+							<td><?php echo $item['create_time']; ?></td>
 							<td>
-								<span class="btn btn-default no status" data-name="status" data-id="1" data-val="1">
-									<i class="glyphicon glyphicon-remove"></i> 禁用
+								<?php if($item['isread'] == 1): ?>
+								<span class="btn btn-default btn-xs no status" data-name="status" data-id="<?php echo $item['id']; ?>"
+									  data-val="<?php echo $item['isread']; ?>">
+                            <i class="glyphicon glyphicon-remove"></i> 隐藏
+                        </span>
+								<?php else: ?>
+								<span class="btn btn-success btn-xs status" data-name="status" data-id="<?php echo $item['id']; ?>"
+									  data-val="<?php echo $item['isread']; ?>">
+									<i class="glyphicon glyphicon-ok"></i> 显示
 								</span>
+
+								<?php endif; ?>
 
 							</td>
 							<td>
 								<div class="btn-group">
-									<a href="javascript:;" class="btn btn-success" onclick="dx_openWindowParent('<i style=\'margin-right:6px;\' class=\'glyphicon glyphicon-edit\'></i> Edit-编辑','add.html')">
+									<a href="javascript:;" class="btn btn-xs btn-success" onclick="dx_openWindowParent('<i style=\'margin-right:6px;\' class=\'glyphicon glyphicon-edit\'></i> Edit-编辑','<?php echo url('article/edit'); ?>?id=<?php echo $item['id']; ?>')">
 										<i class="glyphicon glyphicon-edit"></i> 编辑
 									</a>
-									<a href="javascript:;" class="btn btn-warning">
+									<a href="javascript:;" class="btn btn-xs btn-warning" onclick="del(this,'<?php echo $item['id']; ?>')">
 										<i class="glyphicon glyphicon-trash"></i> 删除
 									</a>
 								</div>
 							</td>
 						</tr>
-						<tr>
-							<td class="frist-th">2</td>
-							<td>
-								<img src="dx/img/333.jpg" class="table-img br0">
-							</td>
-							<td style="min-width: 400px;">
-								<a href="#">T179次列车在湖南郴州脱线 未造成人员死亡</a>
-							</td>
-							<td>
-								<a href="#">国内</a>
-							</td>
-							<td>admin</td>
-							<td>2020-03-13</td>
-							<td>
-								<span class="btn btn-success status" data-name="status" data-id="2" data-val="0">
-									<i class="glyphicon glyphicon-ok"></i> 启用
-								</span>
-							</td>
-							<td>
-								<div class="btn-group">
-									<a href="javascript:;" class="btn btn-success" onclick="dx_openWindowParent('<i style=\'margin-right:10px;\' class=\'glyphicon glyphicon-edit\'></i> Edit-编辑','add.html')">
-										<i class="glyphicon glyphicon-edit"></i> 编辑
-									</a>
-									<a href="javascript:;" class="btn btn-warning">
-										<i class="glyphicon glyphicon-trash"></i> 删除
-									</a>
-								</div>
-							</td>
-						</tr>
+						<?php endforeach; endif; else: echo "" ;endif; ?>
 					</tbody>
 				</table>
 			</div>
 			<nav aria-label="Page navigation">
-				<ul class="pagination">
-					<li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
-					<li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
-					<li><a href="#">2</a></li>
-					<li><a href="#">3</a></li>
-					<li><a href="#">4</a></li>
-					<li><a href="#">5</a></li>
-					<li>
-						<a href="#" aria-label="Next">
-							<span aria-hidden="true">&raquo;</span>
-						</a>
-					</li>
+				<?php echo $page; ?>
 			</nav>
 		</div>
 	</body>
 	<script type="text/javascript">
-		$('.status').click('on', function() {
+		$('.status').click('on', function () {
 			var name = $(this).attr('data-name');
 			var id = $(this).attr('data-id');
 			var val = $(this).attr('data-val');
 			var action;
 			if (val > 0) {
+				var status = 0;
 				action = "禁用";
 
 			} else {
+				var status = 1;
 				action = "启用";
 			}
-
-			// layer.msg(name+'\\\\'+id+'//////'+val)
 			if ($(this).hasClass('no')) {
-				$(this).attr('class', 'btn btn-success status').attr('data-val', '0').html(
-					'<i class="glyphicon glyphicon-ok"></i> 启用');
+				$(this).attr('class', 'btn btn-xs btn-success status').attr('data-val', '0').html('<i class="glyphicon glyphicon-ok"></i> 显示');
 			} else {
-				$(this).attr('class', 'btn btn-default no status').attr('data-val', '1').html(
-					'<i class="glyphicon glyphicon-remove"></i> 禁用');
+				$(this).attr('class', 'btn btn-xs btn-default no status').attr('data-val', '1').html('<i class="glyphicon glyphicon-remove"></i> 隐藏');
 			}
 
-			layer.msg('执行' + action + '操作' + '<br />' + '字段值:' + name + '<br />' + '管理员:' + id + '<br />' + '状态码:' + val, {
-				anim: 1,
-				time: 3000,
-				offset: 'b'
+			$.ajax({
+				type: "post",
+				url: "<?php echo url('article/update'); ?>",
+				async: true,
+				data: {id: id, isread: status},
+				dataType: 'json',
+				success: function (data) {
+					if (data.code === 0) {
+						layer.msg(data.msg, {icon: 7, anim: 1})
+					} else {
+						layer.msg(data.msg, {icon: 1, anim: 1,time:3000}, function () {
+							layer.closeAll();
+						})
+					}
+				}
 			});
-		})
+			return false;
+
+
+		});
+
+		//    删除
+		function del(obj, id) {
+			layer.confirm('真的删除吗', function (e) {
+				$.ajax({
+					type: "get",
+					url: "<?php echo url('article/del'); ?>",
+					async: true,
+					data: {id: id},
+					dataType: 'json',
+					success: function (data) {
+						if (data.code === 0) {
+							layer.msg(data.msg, {icon: 7, anim: 4})
+						} else {
+							layer.msg(data.msg, {icon: 1, anim: 1}, function () {
+								layer.closeAll();
+								$(obj).parents("tr").remove();
+							})
+						}
+					}
+				});
+				return false;
+			});
+		}
 	</script>
 
 

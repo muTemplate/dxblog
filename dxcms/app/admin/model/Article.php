@@ -16,5 +16,11 @@ class Article extends Model
     protected $autoWriteTimestamp = true;
 
 
+    public function getPidAttr($value)
+    {
+        $value = db('category')->where('id',$value)->value('title');
+        return $value;
+    }
+
 
 }

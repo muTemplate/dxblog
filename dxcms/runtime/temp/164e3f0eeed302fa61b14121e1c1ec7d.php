@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:77:"D:\mumu\WWW\windowCms\public/../dxcms/app/admin\view\article\add_article.html";i:1585994919;s:61:"D:\mumu\WWW\windowCms\dxcms\app\admin\view\common\_style.html";i:1585897035;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:77:"D:\mumu\WWW\windowCms\public/../dxcms/app/admin\view\article\add_article.html";i:1586014200;s:61:"D:\mumu\WWW\windowCms\dxcms\app\admin\view\common\_style.html";i:1585897035;}*/ ?>
 <!DOCTYPE html>
 <html lang="zh">
 <head>
@@ -18,23 +18,28 @@
     <style type="text/css">
         #upload{
             width: 100%;
-            height: 185px;
+            height: 150px;
             padding: 0;
             border: 1px solid #d0e9c6;
             text-align: center;
             cursor: pointer;
         }
 
-        #demo1{
-            width: 150px;
-            height: 150px
+        #face {
+            width: 100%;
         }
+
+        #demo1{
+            width: 100%;
+            margin: 0 auto;
+        }
+
 
     </style>
 </head>
 <body>
 <div class="container-fluid dx-main" style="height: auto;">
-    <form action="<?php echo url('admin/save'); ?>" method="post" class="col-md-6 layui-form" style="height: auto;padding:20px 15px;">
+    <form action="<?php echo url('article/save'); ?>" method="post" class="col-md-6 layui-form" style="height: auto;padding:20px 15px;">
 
         <div class="form-group">
             <label for="account">文章标题</label>
@@ -42,12 +47,11 @@
         </div>
 
         <div class="form-group">
-            <label for="account">文章属性</label>
+            <label for="account">文章属性*- <i style="font-size: 12px;color: #ff0000;">暂时支持单选</i> -*</label>
             <div>
-                <input type="radio" name="flag" value="1" title="轮播" checked>
-                <input type="radio" name="flag" value="2" title="推荐">
-                <input type="radio" name="flag" value="3" title="置顶">
-                <input type="radio" name="flag" value="4" title="滚动">
+                <?php if(is_array($flag) || $flag instanceof \think\Collection || $flag instanceof \think\Paginator): $i = 0; $__LIST__ = $flag;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$f): $mod = ($i % 2 );++$i;?>
+                <input type="checkbox" name="flag" value="<?php echo $f['fName']; ?>" title="<?php echo $f['fTitle']; ?>" lay-skin="primary">
+                <?php endforeach; endif; else: echo "" ;endif; ?>
             </div>
         </div>
 
@@ -63,11 +67,10 @@
                    <label for="source">所属栏目</label>
                    <select name="pid" class="form-control">
                        <option value=""></option>
-                       <option value="1">文章列表</option>
-                       <option value="2">封面频道</option>
-                       <option value="3">站外跳转</option>
-                       <option value="4">专题活动</option>
-                       <option value="">更多……(开发中)</option>
+                       <?php if(is_array($cate) || $cate instanceof \think\Collection || $cate instanceof \think\Paginator): $i = 0; $__LIST__ = $cate;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$item): $mod = ($i % 2 );++$i;if($item['type'] == 1): ?>
+                                <option value="<?php echo $item['id']; ?>"><?php echo str_repeat('————|',$item['level']*1); ?> <?php echo $item['title']; ?></option>
+                            <?php endif; endforeach; endif; else: echo "" ;endif; ?>
+
                    </select>
                </div>
 
@@ -89,14 +92,14 @@
                 <div class="layui-upload" id="upload">
                     <img id="demo1" src="" alt="">
                 </div>
-                <input class="form-control" type="hidden" name="thumbnail" value="" id="face">
+                <input class="form-control" type="text" name="thumbnail" readonly value="" id="face">
             </div>
         </div>
 
 
         <div class="form-group" style="height: 530px;clear: both;">
             <label for="captcha_font">文章内容</label>
-            <textarea name="content" class="form-control" id="content"></textarea>
+            <textarea name="body" class="form-control" id="content"></textarea>
         </div>
 
         <div class="form-group" style="height: 60px;">
@@ -210,9 +213,9 @@
     });
 </script>
 <script type="text/javascript">
-    layui.use('laydate', function(){
+    layui.use(['laydate','upload'], function(){
         var laydate = layui.laydate;
-
+        var upload = layui.upload;
         //执行一个laydate实例
         laydate.render({
             elem: '#addTime'
@@ -220,37 +223,36 @@
             ,theme: '#1c93d1'
             ,value: new Date()
         });
+
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#upload'
+            ,url: "<?php echo url('file/image'); ?>" //改成您自己的上传接口
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#del').show();
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+                //如果上传失败
+                if(res.code === 0){
+                    $('#face').val(res.data);
+                    layer.alert(res.msg);
+                }
+                else{
+                    $('#face').val(res.data);
+                }
+                //上传成功
+            }
+
+        });
+
     });
 
-
-    $('.status').click('on', function () {
-        var name = $(this).attr('data-name');
-        var id = $(this).attr('data-id');
-        var val = $(this).attr('data-val');
-        var action;
-        if (val > 0) {
-            action = "禁用";
-
-        } else {
-            action = "启用";
-        }
-
-        // layer.msg(name+'\\\\'+id+'//////'+val)
-        if ($(this).hasClass('no')) {
-            $(this).attr('class', 'btn btn-success status').attr('data-val', '0').html(
-                '<i class="glyphicon glyphicon-ok"></i> 启用');
-        } else {
-            $(this).attr('class', 'btn btn-default no status').attr('data-val', '1').html(
-                '<i class="glyphicon glyphicon-remove"></i> 禁用');
-        }
-
-        layer.msg('执行' + action + '操作' + '<br />' + '字段值:' + name + '<br />' + '管理员:' + id + '<br />' + '状态码:' + val, {
-            anim: 1,
-            time: 3000,
-            offset: 'b'
-        });
-    })
 </script>
+
 
 
 </html>
