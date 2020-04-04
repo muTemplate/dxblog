@@ -295,6 +295,12 @@ form label {
     color: #27a1e8;
 }
 
+.layui-form-checked[lay-skin=primary] i {
+    border-color: #27a1e8;
+    background-color: #27a1e8;
+    color: #fff;
+}
+
 .disabled {
     background: #DDDDDD;
     color: #55aaff;
@@ -350,3 +356,4 @@ textarea {
     background: url("../img/no_img.gif") no-repeat center;
     background-size: contain;
 }
+

@@ -5,13 +5,14 @@ namespace app\admin\controller;
 
 
 use app\admin\common\Base;
+use think\Db;
 use think\Request;
 
 class Article extends Base
 {
     public function index(){
 
-        $model = new \app\admin\model\Admin();
+        $model = new \app\admin\model\Article();
 
         $list = $model->paginate(7);
         $page = $list->render();
@@ -29,8 +30,12 @@ class Article extends Base
      **/
 
     public function add(){
-
-
+        $category = \app\admin\model\Category::getList();
+        $flag = Db::name('flag')->select();
+        $this->assign([
+            'cate' => $category,
+            'flag' => $flag,
+        ]);
         return $this->fetch('add_article');
     }
 
@@ -41,24 +46,40 @@ class Article extends Base
     public function save(){
         if ($this->request->isPost()){
             $data = $this->request->param();
-            $admin = [
-                'account' => trim($data['account']),
-                'face' => $data['face'],
-                'password' => substr(md5(trim($data['password'])),10,16),
-                'name'  =>  trim($data['name']),
-                'status' => $data['status']
+
+            $article = [
+                'pid' => (int)$data['pid'],
+                'title' => trim($data['title']),
+                'flag' => $data['flag'],
+                'info' => trim($data['info']),
+                'writer'  =>  trim($data['writer']),
+                'source' => trim($data['source']),
+                'comment' => (int)$data['comment'],
+                'create_time' => !empty($data['create_time'])?strtotime($data['create_time']):time(),
+                'update_time' => time()
             ];
 
-            $validate = validate('admin');
-            if ($validate->scene('add')->check($admin)===false){
+            $model = new \app\admin\model\Article();
+            $validate = validate('article');
+            if ($validate->scene('add')->check($article)===false){
                 $this->error($validate->getError());
             }
 
-           if(\app\admin\model\Admin::create($admin)){
-               $this->success('执行操作成功');
-           }else{
-               $this->error('执行操作失败');
-           }
+            $aid = $model->insertGetId($article);
+
+            if ($aid){
+                $content = [
+                    'body'  => $data['body'],
+                    'aid'   => $aid,
+                    'title' => $data['title'],
+                ];
+                Db::name('content')->insert($content);
+
+                $this->success('执行操作成功');
+            }else{
+                $this->error('执行操作失败');
+            }
+
 
         }else{
             $this->error('异常操作');
@@ -73,15 +94,20 @@ class Article extends Base
 
     public function edit($id){
 
-        $admin = \app\admin\model\Admin::get($id);
-        if (!$admin){
-            $this->error('管理员不存在');
+        $article = \app\admin\model\Article::get($id);
+        if (!$article){
+            $this->error('文档不存在');
         }
-
+        $category = \app\admin\model\Category::getList();
+        $content = Db::name('content')->where('aid',$id)->find();
+        $flag = Db::name('flag')->select();
         $this->assign([
-            'admin' =>  $admin,
+            'article' =>  $article,
+            'cate'  =>  $category,
+            'content'  =>   $content,
+            'flag'  =>  $flag,
         ]);
-        return $this->fetch();
+        return $this->fetch('edit_article');
     }
 
     /**
@@ -90,54 +116,64 @@ class Article extends Base
      **/
     public function update(){
         if ($this->request->isPost()){
+
+
             $data = $this->request->param();
-            //halt($data);
-            if (isset($data['id']) && isset($data['account'])){
-                $admin = [
-                    'id'    =>  $data['id'],
-                    'account' => trim($data['account']),
-                    'face' => $data['face'],
-                    'name'  =>  trim($data['name']),
-                    'status' => $data['status']
+            if (isset($data['id']) && isset($data['title'])){
+                $article = [
+                    'id'    => (int)$data['id'],
+                    'pid' => (int)$data['pid'],
+                    'title' => trim($data['title']),
+                    'flag' => $data['flag'],
+                    'info' => trim($data['info']),
+                    'writer'  =>  trim($data['writer']),
+                    'source' => trim($data['source']),
+                    'comment' => (int)$data['comment'],
+                    'create_time' => !empty($data['create_time'])?strtotime($data['create_time']):time(),
+                    'update_time' => time()
                 ];
 
-                if ($data['face']!=$data['odface']){
-                    unlink(substr($data['odface'],1));
-                }
-
-                unset($data['odface']);
-
-                if (empty($data['password'])){
-                    unset($data['password']);
-                }else{
-                    $admin['password'] = substr(md5(trim($data['password'])),10,16);
-                }
-
-                $validate = validate('admin');
-                if ($validate->scene('edit')->check($admin)===false){
+                $model = new \app\admin\model\Article();
+                $validate = validate('article');
+                if ($validate->scene('edit')->check($article)===false){
                     $this->error($validate->getError());
                 }
 
-            }
-            else{
-                $admin =[
-                    'id'    => $data['id'],
-                    'status'    =>  $data['status'],
-                ];
-            }
+                $aid = $model->save($article);
 
-            //halt($admin);
+                if ($aid){
+                    $content = [
+                        'body'  => $data['body'],
+                        'aid'   => $aid,
+                        'title' => $data['title'],
+                    ];
+                    Db::name('content')->update($content);
 
-            if(\app\admin\model\Admin::update($admin)){
-                $this->success('执行操作成功');
+                    $this->success('执行操作成功');
+                }else{
+                    $this->error('执行操作失败');
+                }
             }else{
-                $this->error('执行操作失败');
+
+                $arctile =[
+                    'id'    => $data['id'],
+                    'isread'    =>  $data['isread'],
+                ];
+
+                if( \app\admin\model\Article::update($arctile)){
+
+                    return Message(1,'执行操作成功');
+                }else{
+                    return Message(0,'执行操作失败');
+                }
             }
+
 
 
         }else{
             $this->error('异常操作');
         }
+
 
     }
 
@@ -148,16 +184,16 @@ class Article extends Base
 
     public function del($id){
 
-        $delAdmin = \app\admin\model\Admin::get($id);
+        $delAdmin = \app\admin\model\Article::get($id);
 
         if ($delAdmin){
-            if(\app\admin\model\Admin::destroy($id,false)){
+            if(\app\admin\model\Article::destroy($id,false)){
                 return Message(1,'执行操作成功');
             }else{
                 return Message(0,'执行操作失败');
             }
         }else{
-            return Message(0,'找不到要删除的用户');
+            return Message(0,'找不到要删除的文章');
         }
 
     }
