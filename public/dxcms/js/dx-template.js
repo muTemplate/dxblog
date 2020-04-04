@@ -112,7 +112,7 @@ function dx_openWindowParent(title, url, w, h) {
 		url = "404.html";
 	};
 	if (w == null || w == '') {
-		w = ($(window).width() * 1);
+		w = ($(window).width() * .86);
 	};
 	if (h == null || h == '') {
 		h = ($(window).height() * 1);
