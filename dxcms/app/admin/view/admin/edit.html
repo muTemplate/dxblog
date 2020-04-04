@@ -18,23 +18,12 @@
 				cursor: pointer;
 			}
 
-			#upload .glyphicon{
-				font-size: 80px;
-				color: #dddddd;
-				margin-top: 30px;
-				display: none;
-			}
-
 			#demo1{
 				width: 150px;
 				height: 150px;
 				display: block;
 			}
 
-			#del{
-				float: right;
-				display: none;
-			}
 		</style>
 
 	</head>
@@ -65,7 +54,7 @@
 
 					</label>
 					<div class="layui-upload" id="upload">
-						<i class="glyphicon glyphicon-picture"></i>
+
 						<img  id="demo1" src="{{$admin.face}}" alt="">
 					</div>
 					<input class="form-control" type="hidden" name="odface" value="{{$admin.face}}" id="odface">

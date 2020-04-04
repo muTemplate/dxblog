@@ -29,7 +29,6 @@
 			#demo1{
 				width: 100%;
 				max-height: 150px;
-				display: none;
 			}
 
 
@@ -37,7 +36,7 @@
 	</head>
 	<body>
 		<div class="container-fluid dx-main">
-			<form action="{{:url('category/save')}}" method="post" class="layui-form">
+			<form action="{{:url('category/save')}}" method="post" class="layui-form" style="height: auto;">
 				<div class="dx-main-box">
 					<!-- title -->
 					<ul class="nav nav-tabs stystem-tabs" role="tablist">
@@ -55,6 +54,7 @@
 							<div class="form-group">
 								<label for="title"><span style="color: #fc5520;">*</span>栏目名称</label>
 								<input type="text" class="form-control" name="title" value="" id="title" autocomplete="off">
+								<input type="hidden" name="pid" value="{{$pid}}">
 							</div>
 
 							<div class="form-group">
@@ -65,7 +65,7 @@
 							<div class="form-group">
 								<label for="keyword">封面图片</label>
 								<div class="layui-upload" id="upload">
-									<i class="glyphicon glyphicon-picture"></i>
+
 									<img  id="demo1" src="" alt="">
 								</div>
 								<input class="form-control" type="text" readonly name="cover_img" value="" id="face">
@@ -78,13 +78,12 @@
 									<option value="2">封面频道</option>
 									<option value="3">站外跳转</option>
 									<option value="4">专题活动</option>
-									<option value="">更多……(开发中)</option>
 								</select>
 							</div>
 
 							<div class="form-group">
 								<label for="filepath">栏目文件夹名称</label>
-								<input type="text" class="form-control" name="filepath" value="" id="filepath" autocomplete="off">
+								<input type="text" class="form-control" name="cate_folder" value="" id="filepath" autocomplete="off">
 							</div>
 
 							<div class="form-group">
@@ -106,7 +105,6 @@
 								</div>
 							</div>
 
-
 						</div>
 						<!-- 基本设置 End -->
 
@@ -125,7 +123,6 @@
 										</select>
 									</div>
 								</div>
-								
 							</div>
 
 							<div class="form-group">
@@ -170,24 +167,21 @@
 							
 							<div class="form-group">
 								<label for="captcha_font">SEO描述</label>
-								<input type="text" class="form-control" name="meta_desc" value="" id="captcha_font3"
-								 autocomplete="off">
+								<textarea name="meta_desc" class="form-control" autocomplete="off"></textarea>
 							</div>
 
 						</div>
 						<!-- 高级设置 End -->
 
-
 						<!-- 栏目内容 Start -->
-						<div role="tabpanel" class="tab-pane col-md-6" id="settings">
+						<div role="tabpanel" class="tab-pane col-md-6" id="settings" style="height: 530px;overflow: hidden;">
 							<div class="form-group">
 								<label for="captcha_font">这里是栏目内容-Content</label>
-								<textarea name="content" class="form-control" rows="3"></textarea>
+								<textarea name="content" class="form-control" id="content"></textarea>
 							</div>
 						</div>
 						<!-- 栏目内容 End -->
 
-						
 						<div class="btn-box" style="clear: both;padding: 15px;">
 							<button type="submit" class="btn btn-primary dx-btn-submit">提交</button>
 						</div>
@@ -199,6 +193,86 @@
 		</div>
 
 	</body>
+	<script src="__ADMIN_TEMPLATE_PATH__/include/umeditor/ueditor.config.js" type="text/javascript" charset="utf-8"></script>
+	<script src="__ADMIN_TEMPLATE_PATH__/include/umeditor/ueditor.all.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var ue = UE.getEditor('content', {
+			//取消内容框自动增长，改成滚动条
+			autoHeight: false,
+			// 取消工具栏浮动
+			autoFloatEnabled: false,
+			toolbars: [
+				[
+					'undo', //撤销
+					'redo', //重做
+					'help', //帮助
+					'|',
+					'removeformat', //清除格式
+
+					'autotypeset', //自动排版
+						'|',
+					'forecolor', //字体颜色
+					'backcolor', //背景色
+					'fontborder', //字符边框
+					'|',
+					'bold', //加粗
+					'italic', //斜体
+					'underline', //下划线
+					'strikethrough', //删除线
+					'formatmatch', //格式刷
+					'|',
+					'pasteplain', //纯文本粘贴模式
+					'emotion', //表情
+					'spechars', //特殊字符
+					'searchreplace', //查询替换
+					'|',
+					'justifyleft', //居左对齐
+					'justifyright', //居右对齐
+					'justifycenter', //居中对齐
+					'justifyjustify', //两端对齐
+						'|',
+					'simpleupload', //单图上传
+					'insertimage', //多图上传
+					'insertvideo', //视频
+					'map', //Baidu地图
+					'|',
+					'inserttitle', //插入标题
+					'insertcode', //代码语言
+					'fontfamily', //字体
+					'fontsize', //字号
+					'paragraph', //段落格式
+					'customstyle', //自定义标题
+					'|',
+					'insertorderedlist', //有序列表
+					'insertunorderedlist', //无序列表
+					'link', //超链接
+					'preview', //预览
+					'|',
+					'imagenone', //默认
+					'imageleft', //左浮动
+					'imageright', //右浮动
+					'imagecenter', //居中
+					'|',
+					'lineheight', //行间距
+					'rowspacingtop', //段前距
+					'rowspacingbottom', //段后距
+					'indent', //首行缩进
+					'subscript', //下标
+					'superscript', //上标
+					'|',
+					'selectall', //全选
+					'horizontal', //分隔线
+					'time', //时间
+					'date', //日期
+					'fullscreen', //全屏
+					'edittip ', //编辑提示
+					//'drafts', // 从草稿箱加载
+					'cleardoc', //清空文档
+				]
+			]
+
+		});
+	</script>
 	<script type="text/javascript">
 		layui.use('upload', function() {
 			var upload = layui.upload;

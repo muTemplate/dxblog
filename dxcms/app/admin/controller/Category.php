@@ -5,21 +5,21 @@ namespace app\admin\controller;
 
 
 use app\admin\common\Base;
+use think\exception\DbException;
 use think\Request;
+use think\Db;
+use think\response\Json;
 
 class Category extends Base
 {
     public function index()
     {
 
-        $model = new \app\admin\model\Category();
-
-        $list = $model->paginate(7);
-        $page = $list->render();
+        $list = \app\admin\model\Category::getList();
 
         $this->assign([
             'list' => $list,
-            'page' => $page,
+
         ]);
         return $this->fetch('category');
     }
@@ -29,9 +29,12 @@ class Category extends Base
      * @ Add
      **/
 
-    public function add()
+    public function add($pid=0)
     {
 
+        $this->assign([
+            'pid' => $pid,
+        ]);
         return $this->fetch('add_category');
     }
 
@@ -47,28 +50,57 @@ class Category extends Base
 
             $category = [
                 'title' => trim($data['title']),
+                'pid'   =>  $data['pid'],
                 'name' => $data['name'],
                 'cover_img' => trim($data['cover_img']),
                 'type' => (int)trim($data['type']),
-                'filepath' => $data['filepath'],
+                'cate_folder' => $data['cate_folder'],
                 "readauth" => (int)trim($data['readauth']),
                 "isread" => (int)$data['isread'],
                 "meta_title" => trim($data['meta_title']),
                 "meta_key" => trim($data['meta_key']),
                 "meta_desc" => trim($data['meta_desc']),
                 "content" => trim($data['content']),
+                'create_time' => time()
             ];
 
             $validate = validate('category');
             if ($validate->scene('add')->check($category) === false) {
                 $this->error($validate->getError());
             }
+            $model = new \app\admin\model\Category();
 
-            if (\app\admin\model\Category::create($category)) {
-                $this->success('执行操作成功');
-            } else {
-                $this->error('执行操作失败');
+            Db::startTrans();
+            try {
+
+                Db::name('category')->insert($category);
+                $id = Db::name('category')->getLastInsID();
+                switch ($category['type']) {
+                    case 1:
+                        $url = url('home/lists/index?id=' . $id);
+                        break;
+                    case 2:
+                        $url = url('home/single/index?id=' . $id);
+                        break;
+                    case 3:
+                        $url = url($category['cate_folder']);
+                        break;
+                    case 4:
+                        $url = url('home/activity/index?id=' . $id);
+                        break;
+                }
+                $model->save(['typelink' => $url], ['id' => $id]);
+                // 提交事务
+                Db::commit();
+
+
+            } catch (\Exception $e) {
+
+                // 回滚事务
+                Db::rollback();
+                $this->error($e->getTraceAsString());
             }
+            $this->success('执行操作成功');
 
         } else {
             $this->error('异常操作');
@@ -84,15 +116,15 @@ class Category extends Base
     public function edit($id)
     {
 
-        $admin = \app\admin\model\Admin::get($id);
-        if (!$admin) {
-            $this->error('管理员不存在');
+        $category = \app\admin\model\Category::get($id);
+        if (!$category) {
+            $this->error('栏目不存在');
         }
 
         $this->assign([
-            'admin' => $admin,
+            'category' => $category,
         ]);
-        return $this->fetch();
+        return $this->fetch('edit_category');
     }
 
     /**
@@ -103,73 +135,112 @@ class Category extends Base
     {
         if ($this->request->isPost()) {
             $data = $this->request->param();
-            //halt($data);
-            if (isset($data['id']) && isset($data['account'])) {
-                $admin = [
-                    'id' => $data['id'],
-                    'account' => trim($data['account']),
-                    'face' => $data['face'],
-                    'name' => trim($data['name']),
-                    'status' => $data['status']
+            if (isset($data['id']) && isset($data['title'])){
+                $category = [
+                    'id' => (int)$data['id'],
+                    'title' => trim($data['title']),
+                    'name' => $data['name'],
+                    'cover_img' => trim($data['cover_img']),
+                    'type' => (int)trim($data['type']),
+                    'cate_folder' => $data['cate_folder'],
+                    "readauth" => (int)trim($data['readauth']),
+                    "isread" => (int)$data['isread'],
+                    "meta_title" => trim($data['meta_title']),
+                    "meta_key" => trim($data['meta_key']),
+                    "meta_desc" => trim($data['meta_desc']),
+                    "content" => trim($data['content']),
+                    'create_time' => time()
                 ];
 
-                if ($data['face'] != $data['odface']) {
-                    unlink(substr($data['odface'], 1));
-                }
-
-                unset($data['odface']);
-
-                if (empty($data['password'])) {
-                    unset($data['password']);
-                } else {
-                    $admin['password'] = substr(md5(trim($data['password'])), 10, 16);
-                }
-
-                $validate = validate('admin');
-                if ($validate->scene('edit')->check($admin) === false) {
+                $validate = validate('category');
+                if ($validate->scene('add')->check($category) === false) {
                     $this->error($validate->getError());
                 }
+                $model = new \app\admin\model\Category();
+                switch ($category['type']) {
+                    case 1:
+                        $category['typelink'] = url('home/lists/index?id=' . $category['id']);
+                        break;
+                    case 2:
+                        $category['typelink'] = url('home/single/index?id=' . $category['id']);
+                        break;
+                    case 3:
+                        $category['typelink'] = url($category['cate_folder']);
+                        break;
+                    case 4:
+                        $category['typelink'] = url('home/activity/index?id=' . $category['id']);
+                        break;
+                }
+                if ($model->save($category, ['id' => $category['id']])) {
 
-            } else {
-                $admin = [
-                    'id' => $data['id'],
-                    'status' => $data['status'],
+                    $this->success('执行操作成功');
+
+                } else {
+
+                    $this->error('执行操作失败');
+                }
+            }else{
+
+                $cate =[
+                    'id'    => $data['id'],
+                    'isread'    =>  $data['isread'],
                 ];
+
+               if( \app\admin\model\Category::update($cate)){
+
+                   return Message(1,'执行操作成功');
+               }else{
+                   return Message(0,'执行操作失败');
+               }
+
             }
 
-            //halt($admin);
 
-            if (\app\admin\model\Admin::update($admin)) {
-                $this->success('执行操作成功');
-            } else {
-                $this->error('执行操作失败');
-            }
 
 
         } else {
             $this->error('异常操作');
         }
 
+
     }
+
+//    排序
+    public function sort(){
+        if ($this->request->isPost()) {
+            $data = $this->request->param();
+            $sort = $data['sort'];
+
+            foreach ($sort as $k=>$v){
+
+                \app\admin\model\Category::update(['sort'=>$v],['id'=>$k]);
+            }
+            $this->success('执行操作成功');
+        }
+
+    }
+
 
     /**
      * Admin constructor.
-     * @param Request|null $request
+     * @param $id
+     * @return Json
+     * @throws DbException
      */
 
     public function del($id)
     {
 
-        $delAdmin = \app\admin\model\Admin::get($id);
+        $delCate = \app\admin\model\Category::get($id);
 
-        if ($delAdmin) {
-            if (\app\admin\model\Admin::destroy($id, false)) {
+        if ($delCate) {
+            if (\app\admin\model\Category::destroy($id, false)) {
                 return Message(1, '执行操作成功');
             } else {
                 return Message(0, '执行操作失败');
             }
         } else {
-            return Message(0, '找不到要删除的用户');
+            return Message(0, '找不到要删除的栏目');
         }
 
     }

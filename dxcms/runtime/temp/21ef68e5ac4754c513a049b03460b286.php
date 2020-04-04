@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:67:"D:\mumu\WWW\windowCms\public/../dxcms/app/admin\view\admin\add.html";i:1585928802;s:61:"D:\mumu\WWW\windowCms\dxcms\app\admin\view\common\_style.html";i:1585897035;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:67:"D:\mumu\WWW\windowCms\public/../dxcms/app/admin\view\admin\add.html";i:1585992137;s:61:"D:\mumu\WWW\windowCms\dxcms\app\admin\view\common\_style.html";i:1585897035;}*/ ?>
 <!DOCTYPE html>
 <html lang="zh">
 	<head>
@@ -67,7 +67,7 @@
 						管理员头像
 					</label>
 					<div class="layui-upload" id="upload">
-						<i class="glyphicon glyphicon-picture"></i>
+
 						<img  id="demo1" src="" alt="">
 					</div>
 					<input class="form-control" type="hidden" name="face" value="" id="face">

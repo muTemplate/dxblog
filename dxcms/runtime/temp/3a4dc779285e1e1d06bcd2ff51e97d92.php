@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:68:"D:\mumu\WWW\windowCms\public/../dxcms/app/admin\view\admin\edit.html";i:1585928470;s:61:"D:\mumu\WWW\windowCms\dxcms\app\admin\view\common\_style.html";i:1585897035;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:68:"D:\mumu\WWW\windowCms\public/../dxcms/app/admin\view\admin\edit.html";i:1585992137;s:61:"D:\mumu\WWW\windowCms\dxcms\app\admin\view\common\_style.html";i:1585897035;}*/ ?>
 <!DOCTYPE html>
 <html lang="zh">
 	<head>
@@ -73,7 +73,7 @@
 
 					</label>
 					<div class="layui-upload" id="upload">
-						<i class="glyphicon glyphicon-picture"></i>
+						
 						<img  id="demo1" src="<?php echo $admin['face']; ?>" alt="">
 					</div>
 					<input class="form-control" type="hidden" name="odface" value="<?php echo $admin['face']; ?>" id="odface">
@@ -134,33 +134,6 @@
 
 		});
 
-		$('#del').click(function () {
-			var imgUrl = $('#face').val();
-
-			$.ajax({
-				type: "post",
-				url: "<?php echo url('file/del'); ?>",
-				async: true,
-				data: {image:imgUrl},
-				dataType: 'json',
-				success: function (data) {
-					if (data.code === 0) {
-						layer.msg(data.msg, {anim: 3})
-					} else {
-
-						$('#demo1').attr('src','').hide();
-						$('#upload .glyphicon').show();
-						$('#del').hide();
-						$('#face').val('');
-
-					}
-				}
-			});
-
-
-
-			$()
-		})
 
 	</script>
 </html>

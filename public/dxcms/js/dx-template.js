@@ -8,21 +8,19 @@ $(window).ready(function() {
 		$("tbody.category-table tr[pid!='0']").hide();
 		$('.icon-a').click(function() {
 			if ($(this).attr('data-open') == 'on') {
-				$(this).attr('class', 'glyphicon glyphicon-minus icon-a');
+				$(this).attr('class', 'glyphicon glyphicon-folder-open icon-a');
 				$(this).attr('data-open', 'off');
 				cateId = $(this).parents('tr').attr('cid');
 				$("tbody.category-table tr[pid=" + cateId + "]").show();
 				$('.telescopic').attr('data-val', 'true').html('<i class="glyphicon glyphicon-sort"></i> 收起');
 			} else {
 				cateIds = [];
-				$(this).attr('class', 'glyphicon glyphicon-plus icon-a');
+				$(this).attr('class', 'glyphicon glyphicon-folder-close icon-a');
 				$(this).attr('data-open', 'on');
 				cateId = $(this).parents('tr').attr('cid');
 				getCateId(cateId);
 				for (var i in cateIds) {
-					$("tbody.category-table tr[cid=" + cateIds[i] + "]").hide().find('.icon-a').attr('class',
-							'glyphicon glyphicon-plus icon-a')
-						.attr('data-open', 'on');
+					$("tbody.category-table tr[cid=" + cateIds[i] + "]").hide().find('.icon-a').attr('class', 'glyphicon glyphicon-folder-close icon-a').attr('data-open', 'on');
 				}
 			}
 		});
@@ -42,14 +40,14 @@ $(window).ready(function() {
 			var status = $(this).attr('data-val');
 
 			if (status === "false") {
-				$(this).attr('data-val', 'true').html('<i class="glyphicon glyphicon-sort"></i> 收起');
-				$('.icon').attr('class', 'glyphicon glyphicon-minus icon-a');
+				$(this).attr('data-val', 'true').html('<i class="glyphicon glyphicon-resize-small"></i> 收起');
+				$('.icon').attr('class', 'glyphicon glyphicon-folder-close icon-a');
 				$('.icon').attr('data-open', 'off');
 				$("tbody.category-table tr[class=tr-hide]").show();
 			} else {
 
-				$(this).attr('data-val', 'false').html('<i class="glyphicon glyphicon-sort"></i> 展开');
-				$('.icon').attr('class', 'glyphicon glyphicon-plus icon-a');
+				$(this).attr('data-val', 'false').html('<i class="glyphicon glyphicon-resize-full"></i> 展开');
+				$('.icon').attr('class', 'glyphicon glyphicon-folder-open icon-a');
 				$('.icon').attr('data-open', 'open');
 				$("tbody.category-table tr[class=tr-hide]").hide();
 
