@@ -80,7 +80,7 @@
 <div class="login-body">
 
     <div class="code-img">
-        1451
+        <img src="{{:url('captcha/index')}}" alt="验证码" onclick="this.src='{{:url(\'captcha/index\')}}?captcha'+Math.random()">
     </div>
     <div class="login-box">
         <div class="login-form">
@@ -136,7 +136,7 @@
                         text.html('<span class="icon icon-fasong" style="color: #fff32f;"></span>'+ data.msg
                             +'<a href="{:url(\'dxcms/index/index\')}" style="color: #FD482C;">跳转中</a>……');
                         setInterval(function () {
-                            window.location.href="{:url('dxcms/index/index')}";
+                            window.location.href="{{:url('admin/index/index')}}";
                         },2000);
 
                     }

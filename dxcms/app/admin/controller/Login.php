@@ -21,14 +21,11 @@ class Login extends Base
         $model = new \app\admin\model\Admin();
         $data = $req->param();
         $account = trim($data['account']);
-        $pwd = !empty($data['password'])?substr(md5(trim($data['password'])),10,16):"";
+        $pwd = substr(md5(trim($data['password'])),10,16);
         $captcha = $data['captcha'];
 
         if (empty($account)){
             return Message(0,'用户名不能为空');
-        }
-        if (empty($pwd)){
-            return Message(0,'密码不能为空');
         }
 
         $user = $model->where('account',$account)->find();
@@ -40,8 +37,14 @@ class Login extends Base
         if ($pwd != $user['password']){
             return Message(0,'密码错误');
         }
+        if(!captcha_check($captcha)){
+            return Message(0,'验证码错误');
+        }
 
-        halt($data);
+        session('user',$user);
+        session('uid',$user['id']);
+
+        return Message(1,'登录成功');
 
 
     }
